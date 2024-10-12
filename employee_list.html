@@ -8,16 +8,16 @@
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto mt-10">
-        <div class="flex justify-between items-center mb-4">
-            <h1 class="text-3xl font-bold">Employee List</h1>
-            <button id="logoutBtn" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                Logout
-            </button>
+        <h1 class="text-3xl font-bold mb-6">Employee List</h1>
+        
+        <!-- Logout button -->
+        <div class="text-right mb-6">
+            <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
         </div>
 
-        <table class="min-w-full bg-white border border-gray-200">
+        <table class="min-w-full bg-white">
             <thead>
-                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <tr class="bg-gray-200 text-gray-600 uppercase text-sm">
                     <th class="py-3 px-6 text-left">Name</th>
                     <th class="py-3 px-6 text-left">Job Title</th>
                     <th class="py-3 px-6 text-left">Department</th>
@@ -25,56 +25,78 @@
                     <th class="py-3 px-6 text-center">Action</th>
                 </tr>
             </thead>
-            <tbody class="text-gray-600 text-sm font-light">
-                <!-- Repeat this block for each employee -->
-                <tr class="border-b border-gray-200 hover:bg-gray-100">
-                    <td class="py-3 px-6 text-left">John Doe</td>
-                    <td class="py-3 px-6 text-left">Manager</td>
-                    <td class="py-3 px-6 text-left">HR</td>
-                    <td class="py-3 px-6 text-left">john.doe@sinksrus.com</td>
+            <tbody>
+                <tr class="border-b">
+                    <td class="py-3 px-6">Ivan Petrov</td>
+                    <td class="py-3 px-6">Software Engineer</td>
+                    <td class="py-3 px-6">IT</td>
+                    <td class="py-3 px-6">ivan.petrov@sinksrus.com</td>
                     <td class="py-3 px-6 text-center">
-                        <button class="bg-blue-500 text-white px-3 py-1 rounded" onclick="openModal('John Doe')">Info</button>
+                        <button class="bg-blue-500 text-white px-3 py-1 rounded" onclick="openModal('Ivan Petrov')">Info</button>
                     </td>
                 </tr>
-                <!-- End block -->
+                <!-- Repeat for other employees -->
             </tbody>
         </table>
     </div>
 
-    <!-- Modal code remains the same -->
+    <!-- Modal -->
+    <div id="employeeModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-5 rounded-lg shadow-lg">
+            <h2 id="modalTitle" class="text-xl font-bold mb-4">Employee Info</h2>
+            <p><strong>Name:</strong> <span id="modalName"></span></p>
+            <p><strong>Job Title:</strong> <span id="modalJob"></span></p>
+            <p><strong>Department:</strong> <span id="modalDept"></span></p>
+            <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+            <p><strong>Contact No.:</strong> <span id="modalContact"></span></p>
+            <p><strong>Address:</strong> <span id="modalAddress"></span></p>
+            <p><strong>Sex:</strong> <span id="modalSex"></span></p>
+            <p><strong>Marital Status:</strong> <span id="modalStatus"></span></p>
+            <button class="bg-red-500 text-white px-4 py-2 rounded mt-4" onclick="closeModal()">Close</button>
+        </div>
+    </div>
 
     <script>
-        // Check if user is logged in
-        if (!localStorage.getItem('loggedIn')) {
-            window.location.href = 'index.html';
-        }
-
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            // Clear login state
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('username');
-            // Redirect to login page
-            window.location.href = 'index.html';
-        });
-
-        const employeeData = {
-            "John Doe": { job: "Manager", dept: "HR", email: "john.doe@sinksrus.com" },
-            // Add other employees here
+        const employees = {
+            "Ivan Petrov": {
+                job: "Software Engineer",
+                dept: "IT",
+                email: "ivan.petrov@sinksrus.com",
+                contact: "555-6789",
+                address: "12 Red Square, Moscow",
+                sex: "Male",
+                status: "Single"
+            },
+            // Add data for other employees
         };
 
         function openModal(name) {
-            const employee = employeeData[name];
-            document.getElementById('modalTitle').innerText = name;
+            const employee = employees[name];
             document.getElementById('modalName').innerText = name;
             document.getElementById('modalJob').innerText = employee.job;
             document.getElementById('modalDept').innerText = employee.dept;
             document.getElementById('modalEmail').innerText = employee.email;
+            document.getElementById('modalContact').innerText = employee.contact;
+            document.getElementById('modalAddress').innerText = employee.address;
+            document.getElementById('modalSex').innerText = employee.sex;
+            document.getElementById('modalStatus').innerText = employee.status;
 
             document.getElementById('employeeModal').classList.remove('hidden');
         }
 
         function closeModal() {
             document.getElementById('employeeModal').classList.add('hidden');
+        }
+
+        // Logout function to clear session and redirect to login page
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            window.location.href = 'index.html';
+        }
+
+        // Check if user is logged in, if not, redirect to login page
+        if (!localStorage.getItem('loggedInUser')) {
+            window.location.href = 'index.html';
         }
     </script>
 </body>
